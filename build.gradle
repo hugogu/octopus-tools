@@ -5,17 +5,26 @@ plugins {
 group = 'io.github.octopus'
 version = '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+apply plugin: 'idea'
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
 }
 
-dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-}
+subprojects {
+    apply plugin: 'kotlin'
 
-test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
+    dependencies {
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
