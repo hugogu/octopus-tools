@@ -1,12 +1,54 @@
+import com.vanniktech.maven.publish.SonatypeHost
+import com.vanniktech.maven.publish.JavaLibrary
+import com.vanniktech.maven.publish.JavadocJar
+
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.10'
     id("io.spring.dependency-management") version "1.1.6"
+    id "com.vanniktech.maven.publish" version "0.29.0"
 }
 
-group = 'io.github.octopus'
-version = '1.0-SNAPSHOT'
+group = 'io.github.hugogu'
+version = '0.0.1'
 
 apply plugin: 'idea'
+
+mavenPublishing {
+    // the first parameter configures the -javadoc artifact, possible values:
+    // - `JavadocJar.None()` don't publish this artifact
+    // - `JavadocJar.Empty()` publish an emprt jar
+    // - `JavadocJar.Javadoc()` to publish standard javadocs
+    // the second whether to publish a sources jar
+    configure(new JavaLibrary(new JavadocJar.None(), true))
+
+    // SONATYPE_HOST in gradle.properties is taking priority over this
+    // publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    pom {
+        name = "Octopus Tools"
+        description = "A set of common tools to connect different system or component up together."
+        inceptionYear = "2024"
+        url = "https://github.com/hugogu/octopus-tools"
+        licenses {
+            license {
+                name = "The MIT License (MIT)"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "hugogu"
+                name = "Hugo Gu"
+                url = "https://github.com/hugogu"
+                email = "hugogu@outlook.com"
+            }
+        }
+        scm {
+            url = "https://github.com/hugogu/octopus-tools"
+            connection = "scm:git:git://github.com/hugogu/octopus-tools.git"
+        }
+    }
+}
 
 allprojects {
     repositories {
