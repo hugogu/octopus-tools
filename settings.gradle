@@ -3,3 +3,6 @@ plugins {
 }
 rootProject.name = 'octopus-tools'
 include("jpa-ext")
+include("jpa-outbox-debezium")
+include("prometheus-metrics")
+include("logging")

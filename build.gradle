@@ -6,6 +6,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.10'
     id("io.spring.dependency-management") version "1.1.6"
     id "com.vanniktech.maven.publish" version "0.29.0"
+    id 'maven-publish'
+    id 'signing'
 }
 
 group = 'io.github.hugogu'
@@ -52,6 +54,7 @@ mavenPublishing {
 
 allprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 
@@ -63,6 +66,7 @@ allprojects {
 subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
 
     dependencyManagement {
         imports {
@@ -76,5 +80,33 @@ subprojects {
 
     test {
         useJUnitPlatform()
+    }
+
+    task sourcesJar(type: Jar) {
+        archiveClassifier.set("sources")
+        from sourceSets.main.allSource
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = 'io.github.hugogu'
+                artifactId = project.name
+                version = '0.0.1'
+                from components.java
+                artifact sourcesJar
+            }
+        }
+
+        repositories {
+            mavenLocal()
+        }
+
+        signing {
+            // signing is only required for releases
+            required {
+                gradle.taskGraph.hasTask("publish") && !gradle.taskGraph.hasTask("publishToMavenLocal")
+            }
+        }
     }
 }

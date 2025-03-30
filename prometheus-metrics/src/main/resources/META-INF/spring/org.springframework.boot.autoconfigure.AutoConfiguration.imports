@@ -1,0 +1,3 @@
+io.github.octopus.metrics.config.FeignMetricsAutoConfig
+io.github.octopus.metrics.config.ObservationConfig
+io.github.octopus.metrics.config.RestTemplateMetricsAutoConfig
